@@ -1,6 +1,5 @@
 """Base settings to build other settings upon."""
 
-from pathlib import Path
 import environ
 
 
@@ -8,13 +7,10 @@ ROOT_DIR = environ.Path(__file__) - 3
 APPS_DIR = ROOT_DIR.path('hitmeapp')
 
 env = environ.Env()
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
+environ.Env.read_env()
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'x+$dgv36v2h@qy63=0bbxww(o8g1*4sr!@%qfx1yi5g_cxqk1b'
+SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 
 # Application definition

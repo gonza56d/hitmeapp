@@ -1,6 +1,6 @@
 # RabbitMQ
-CELERY_BROKER_URL = 'amqp://rabbitmq:5672'
-CELERY_RESULT_BACKEND = 'amqp://rabbitmq:5672'
+CELERY_BROKER_URL = 'pyamqp://rabbitmq:5672'
+CELERY_RESULT_BACKEND = 'rpc://'
 
 # Flower
 CELERY_FLOWER_USER=AkSCcUUkrubMmpHkMlHHIiFnUzKhIidG

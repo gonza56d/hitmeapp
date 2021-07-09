@@ -34,7 +34,7 @@ services:
     image: hitmeapp_local_flower
     ports:
       - "5555:5555"
-    command: celery flower -A hitmeapp.taskapp --broker="amqp://rabbitmq:5672"
+    command: celery flower -A hitmeapp.taskapp --broker="pyamqp://guest@localhost//"
 
   celeryworker:
     <<: *django
@@ -43,7 +43,7 @@ services:
       - rabbitmq
       - postgres
     ports: []
-    command: celery -A hitmeapp.taskapp worker -l info
+    command: celery -A hitmeapp.taskapp worker --loglevel=INFO
 
   celerybeat:
     <<: *django
@@ -52,4 +52,4 @@ services:
       - rabbitmq
       - postgres
     ports: []
-    command: celery -A hitmeapp.taskapp beat -l info
+    command: celery -A hitmeapp.taskapp beat --loglevel=INFO
