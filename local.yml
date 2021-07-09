@@ -14,7 +14,7 @@ services:
   django: &django
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: .dockers/local/Dockerfile
     command: python manage.py runserver 0.0.0.0:8000 --settings=config.settings.local
     volumes:
       - .:/app/

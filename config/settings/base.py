@@ -160,6 +160,8 @@ ADMINS = [
 ]
 MANAGERS = ADMINS
 
+# Models default ID
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Django REST Framework
 REST_FRAMEWORK = {
