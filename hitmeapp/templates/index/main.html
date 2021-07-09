@@ -7,7 +7,15 @@
 {% if user.is_authenticated %}
 <!-- todo -->
 {% else %}
-
+<div class="alert alert-app col-12 col-md-6 offset-md-3">
+    <div class="row">
+        {% for field in signup_form %}
+            <div class="col-12 my-2">
+                {{ field }}
+            </div>
+        {% endfor %}
+    </div>
+</div>
 {% endif %}
 
 {% endblock %}

@@ -1,11 +1,25 @@
 .bg-app {
-    background-color:#ff7f07!important
+    background-color: #ff7f07!important
 }
 
 a.bg-app:focus, a.bg-app:hover, button.bg-app:focus, button.bg-app:hover {
-    background-color:#ffa007!important
+    background-color: #ffa007!important
 }
 
 a {
     color: white;
+}
+
+.alert-app {
+    color:#a85100;
+    background-color: #d38e4f;
+    border-color: #a85100
+}
+
+.alert-app hr {
+    border-top-color: #a85100;
+}
+
+.alert-app .alert-link{
+    color: #da6900;
 }
