@@ -1,0 +1,55 @@
+version: '3'
+
+volumes:
+  local_postgres_data: {}
+
+services:
+  postgres:
+    image: postgres:12
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.envs/.local/.postgres
+
+  django: &django
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000 --settings=config.settings.local
+    volumes:
+      - .:/app/
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+    depends_on:
+      - postgres
+
+  rabbitmq:
+    image: rabbitmq:3.8.8
+
+  flower:
+    <<: *django
+    image: hitmeapp_local_flower
+    ports:
+      - "5555:5555"
+    command: celery flower -A hitmeapp.taskapp --broker="amqp://rabbitmq:5672"
+
+  celeryworker:
+    <<: *django
+    image: hitmeapp_local_celeryworker
+    depends_on:
+      - rabbitmq
+      - postgres
+    ports: []
+    command: celery -A hitmeapp.taskapp worker -l info
+
+  celerybeat:
+    <<: *django
+    image: hitmeapp_local_celerybeat
+    depends_on:
+      - rabbitmq
+      - postgres
+    ports: []
+    command: celery -A hitmeapp.taskapp beat -l info
