@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 
 
 <header class="navbar navbar-expand navbar-dark bg-app flex-column flex-md-row bd-navbar">
@@ -18,9 +19,7 @@
                 </li>
                 {% endfor %}
                 <li class="nav-item px-1">
-                    <button class="btn btn-success">
-                        Login
-                    </button>
+                    <button class="btn btn-success">{% translate 'Login' %}</button>
                 </li>
                 {% endif %}
             </ul>

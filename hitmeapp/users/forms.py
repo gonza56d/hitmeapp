@@ -26,6 +26,14 @@ class LoginForm(forms.Form):
 
 class SignupForm(LoginForm):
 
+    re_password = forms.CharField(widget=PasswordInput(
+        attrs={
+            'class': 'form-control',
+            'type': 'password',
+            'placeholder': 'Repeat password'
+        })
+    )
+
     first_name = forms.CharField(widget=TextInput(
         attrs={
             'class': 'form-control',

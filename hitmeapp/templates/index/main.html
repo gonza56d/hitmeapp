@@ -1,5 +1,6 @@
 {% extends 'main.html' %}
 {% load static %}
+{% load i18n %}
 
 
 {% block content %}
@@ -8,13 +9,21 @@
 <!-- todo -->
 {% else %}
 <div class="alert alert-app col-12 col-md-6 offset-md-3">
-    <div class="row">
+    <form class="row text">
+        <div class="col-12 my-2 text-center">
+            <h3>
+                {% translate 'Register your account' %}
+            </h3>
+        </div>
         {% for field in signup_form %}
             <div class="col-12 my-2">
                 {{ field }}
             </div>
         {% endfor %}
-    </div>
+        <div class="col-12 my-2">
+            <button class="btn btn-success btn-block">{% translate 'Signup' %}</button>
+        </div>
+    </form>
 </div>
 {% endif %}
 
