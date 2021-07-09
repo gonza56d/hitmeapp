@@ -1,5 +1,6 @@
 {% load static %}
 
+
 <header class="navbar navbar-expand navbar-dark bg-app flex-column flex-md-row bd-navbar">
 
     <a class="navbar-brand mr-0 mr-md-2" href="/" aria-label="Hitmeapp">
@@ -7,22 +8,23 @@
     </a>
 
     <div class="navbar-nav-scroll ml-md-auto">
-        <ul class="navbar-nav bd-navbar-nav flex-row">
-            {% if user.is_authenticated %}
-            {% else %}
-            <li class="nav-item px-1">
-                <input type="email" class="form-control">
-            </li>
-            <li class="nav-item px-1">
-                <input type="password" class="form-control">
-            </li>
-            <li class="nav-item px-1">
-                <button class="btn btn-success">
-                    Login
-                </button>
-            </li>
-            {% endif %}
-        </ul>
+        <form method="POST">
+            <ul class="navbar-nav bd-navbar-nav flex-row">
+                {% if user.is_authenticated %}
+                {% else %}
+                {% for field in request.login_form %}
+                <li class="nav-item px-1">
+                    {{ field }}
+                </li>
+                {% endfor %}
+                <li class="nav-item px-1">
+                    <button class="btn btn-success">
+                        Login
+                    </button>
+                </li>
+                {% endif %}
+            </ul>
+        </form>
     </div>
 
 </header>
