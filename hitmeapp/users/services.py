@@ -1,7 +1,9 @@
 """Users business logic."""
 
 # Django
+from django.contrib import auth
 from django.db import transaction
+from django.http.request import HttpRequest
 
 # Project
 from .models import User, Profile
@@ -43,3 +45,39 @@ def create_user(email: str, password: str, first_name: str, last_name: str,
             phone_number=phone_number
         )
     return user
+
+
+def login_user(request: HttpRequest, email: str, password: str) -> User:
+    """Handle user login business logic.
+    
+    Parameters
+    ----------
+    request : HttpRequest
+        Django request object.
+
+    email : str
+        User email as login required credential.
+
+    password : str
+        User password as login required credential.
+
+    Return
+    ------
+    User : Instance of the authenticated used or None if wrong credentials.
+    """
+
+    user = auth.authenticate(email=email, password=password)
+    if user is not None:
+        auth.login(request, user)
+    return user
+
+
+def logout_user(request: HttpRequest) -> None:
+    """Handle user logout business logic.
+
+    Parameters
+    ----------
+    request : HttpRequest
+        Django request object.
+    """
+    auth.logout(request)

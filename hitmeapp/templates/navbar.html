@@ -9,7 +9,16 @@
     </a>
 
     <div class="navbar-nav-scroll ml-md-auto">
-        <form method="POST">
+        {% if user.is_authenticated %}
+        <form method="GET" action="{% url 'users:login' %}">
+            <ul class="navbar-nav bd-navbar-nav flex-row">
+                <li class="nav-item px-1">
+                    <button class="btn btn-success">{% translate 'Logout' %}</button>
+                </li>
+            </ul>
+        </form>
+        {% else %}
+        <form method="POST" action="{% url 'users:login' %}">{% csrf_token %}
             <ul class="navbar-nav bd-navbar-nav flex-row">
                 {% if user.is_authenticated %}
                 {% else %}
@@ -24,6 +33,7 @@
                 {% endif %}
             </ul>
         </form>
+        {% endif %}
     </div>
 
 </header>
