@@ -8,5 +8,5 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(('hitmeapp.index.urls', 'index'), namespace='index')),
-    path('users', include(('hitmeapp.users.urls', 'users'), namespace='users')),
+    path('users/', include(('hitmeapp.users.urls', 'users'), namespace='users')),
 ]
