@@ -6,7 +6,7 @@
 
     <div class="row col-12 px-0">
         <a class="col-8 {% if user.is_authenticated %}col-md-11{% else %}col-md-6{% endif %}" href="/" aria-label="Hitmeapp">
-            <h3>Hitmeapp</h3>
+            <h3 class="mx-auto">Hitmeapp</h3>
         </a>
         {% if user.is_authenticated %}
         <form class="col-4 col-md-1" method="GET" action="{% url 'users:login' %}">
