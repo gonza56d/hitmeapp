@@ -1,12 +1,9 @@
 """Index views"""
 
 # Django
-from django.shortcuts import render
-
-# Project
-from hitmeapp.users.forms import SignupForm
+from django.shortcuts import redirect
+from django.urls import reverse
 
 
 def index(request):
-    signup_form = SignupForm(prefix='signup')
-    return render(request, 'index/main.html', {'signup_form': signup_form})
+    return redirect(reverse('users:signup'))

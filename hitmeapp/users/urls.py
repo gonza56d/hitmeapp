@@ -4,9 +4,9 @@
 from django.urls import path
 
 # Project
-from hitmeapp.users.views import signup
+from hitmeapp.users.views import SignupView
 
 
 urlpatterns = [
-    path('signup', signup, name='signup')
+    path('signup/', SignupView.as_view(), name='signup')
 ]

@@ -25,5 +25,9 @@ def create_user(email: str, password: str, first_name: str, last_name: str,
     phone_number : int
         User phone number. Not required. Used for option to receive notifications
         via WhatsApp.
+    
+    Return
+    ------
+    User : instance of the new user created.
     """
     pass

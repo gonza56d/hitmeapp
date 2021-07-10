@@ -12,15 +12,11 @@ from .forms import SignupForm
 from . import services
 
 
-def signup(request):
-    print('YEA')
-
-
 class SignupView(FormView):
 
     template_name = 'index/main.html'
     form_class = SignupForm
-    success_url = reverse('users:signup')
+    success_url = 'users/signup'
 
     def form_valid(self, form) -> HttpResponse:
         user = services.create_user(
