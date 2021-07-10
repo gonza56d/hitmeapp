@@ -2,37 +2,38 @@
 {% load i18n %}
 
 
-<header class="navbar navbar-expand navbar-dark bg-app flex-column flex-md-row bd-navbar">
+<header class="navbar navbar-expand navbar-dark bg-app flex-column bd-navbar">
 
-    <a class="navbar-brand mr-0 mr-md-2" href="/" aria-label="Hitmeapp">
-        <h3>Hitmeapp</h3>
-    </a>
-
-    <div class="navbar-nav-scroll ml-md-auto">
+    <div class="row col-12 px-0">
+        <a class="col-8 {% if user.is_authenticated %}col-md-11{% else %}col-md-6{% endif %}" href="/" aria-label="Hitmeapp">
+            <h3>Hitmeapp</h3>
+        </a>
         {% if user.is_authenticated %}
-        <form method="GET" action="{% url 'users:login' %}">
+        <form class="col-4 col-md-1" method="GET" action="{% url 'users:login' %}">
             <ul class="navbar-nav bd-navbar-nav flex-row">
-                <li class="nav-item px-1">
+                <li class="nav-item px-1 ml-auto">
                     <button class="btn btn-success">{% translate 'Logout' %}</button>
                 </li>
             </ul>
         </form>
         {% else %}
-        <form method="POST" action="{% url 'users:login' %}">{% csrf_token %}
-            <ul class="navbar-nav bd-navbar-nav flex-row">
-                {% if user.is_authenticated %}
-                {% else %}
-                {% for field in request.login_form %}
-                <li class="nav-item px-1">
-                    {{ field }}
-                </li>
-                {% endfor %}
-                <li class="nav-item px-1">
-                    <button class="btn btn-success">{% translate 'Login' %}</button>
-                </li>
-                {% endif %}
-            </ul>
-        </form>
+        <div class="col-12 col-md-6 px-0">
+            <form class="pl-auto" method="POST" action="{% url 'users:login' %}">{% csrf_token %}
+                <ul class="navbar-nav bd-navbar-nav flex-row float-md-right">
+                    {% if user.is_authenticated %}
+                    {% else %}
+                    {% for field in request.login_form %}
+                    <li class="nav-item px-1">
+                        {{ field }}
+                    </li>
+                    {% endfor %}
+                    <li class="nav-item px-1">
+                        <button class="btn btn-success">{% translate 'Login' %}</button>
+                    </li>
+                    {% endif %}
+                </ul>
+            </form>
+        </div>
         {% endif %}
     </div>
 
