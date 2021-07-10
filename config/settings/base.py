@@ -30,13 +30,14 @@ THIRD_PARTY_APPS = [
 ]
 
 PROJECT_APPS = [
+    'hitmeapp.assetservices.apps.AssetServicesConfig',
     'hitmeapp.users.apps.UsersConfig',
     'hitmeapp.index.apps.IndexConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 
-CUSTOM_MIDDLEWARES = ['hitmeapp.utils.middlewares.LoginFormMiddleware']
+CUSTOM_MIDDLEWARES = ['hitmeapp.utils.middlewares.UniversalVariablesMiddleware']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

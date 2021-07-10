@@ -9,4 +9,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(('hitmeapp.index.urls', 'index'), namespace='index')),
     path('users/', include(('hitmeapp.users.urls', 'users'), namespace='users')),
+    path('asset_services/', include(('hitmeapp.assetservices.urls', 'asset_services'), namespace='asset_services')),
 ]

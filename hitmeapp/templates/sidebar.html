@@ -18,23 +18,28 @@
 
             <h4>{% translate 'Assets list' %}</h4>
 
-            <div class="bd-toc-item">
-                <a class="bd-toc-link" href="/docs/4.6/getting-started/introduction/">
-                    Crypto currency
-                </a>
-            </div>
+            {% for asset_service in request.asset_services_list %}
 
             <div class="bd-toc-item">
-                <a class="bd-toc-link" href="/docs/4.6/layout/overview/">
-                    Mercado Libre
-                </a>
-            </div>
+                {% if asset_service.status.value == 'Available' %}
+                <a class="bd-toc-link" href="{{ asset_service.url }}">
+                {% else %}
+                <span class="bd-toc-link" color="grey">
+                {% endif %}
 
-            <div class="bd-toc-item">
-                <span class="bd-toc-link disabled" href="#" style="color: grey">
-                    Amazon <span class="badge-pill badge-success">{% translate 'Comming soon!' %}</span>
+                    {{ asset_service.name }} 
+                    {% if asset_service.status.value == 'Comming Soon!' %}<span class="badge-pill badge-success">{% translate 'Comming Soon!' %}</span>
+                    {% elif asset_service.status.value == 'Under Maintenance' %}<span class="badge-pill badge-danger">{% translate 'Under Maintenance' %}</span>
+                    {% endif %}
+
+                {% if asset_service.status.value == 'Available' %}
+                </a>
+                {% else %}
                 </span>
+                {% endif %}
             </div>
+
+            {% endfor %}
 
         </nav>
     </div>
