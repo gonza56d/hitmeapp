@@ -6,11 +6,13 @@ from django.http.request import HttpRequest
 from django.http.response import HttpResponse
 from django.shortcuts import redirect
 from django.views.generic import View
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 # Project
 from .forms import SignupForm, LoginForm
 from . import services
+from hitmeapp.utils.exceptions import BusinessException
+from hitmeapp.utils.generic_functions import form_errors_into_string
 
 
 class SignupView(View):
@@ -31,19 +33,23 @@ class SignupView(View):
             showing success/error on signup.
         """
         form = SignupForm(data=request.POST, prefix='signup')
-        if form.is_valid():
-            user = services.create_user(
-                email=form.cleaned_data.get('email'),
-                password=form.cleaned_data.get('password'),
-                first_name=form.cleaned_data.get('first_name'),
-                last_name=form.cleaned_data.get('last_name'),
-                phone_number=form.cleaned_data.get('phone_number')
-            )
-        if user is not None:
-            messages.success(self.request, _('Account created successfully'))
-        else:
-            messages.error(self.request, _('An error occurred'))
-        return redirect('index:main')
+        try:
+            if form.is_valid(): # TRY to create a new user if form is valid
+                services.create_user(
+                    email=form.cleaned_data.get('email'),
+                    password=form.cleaned_data.get('password'),
+                    first_name=form.cleaned_data.get('first_name'),
+                    last_name=form.cleaned_data.get('last_name'),
+                    phone_number=form.cleaned_data.get('phone_number')
+                )
+                messages.success(self.request, _('Account created successfully'))
+            else: # Show form errors in warning notification if form is not valid
+                errors = form_errors_into_string(form.errors)
+                messages.warning(request, errors)
+        except BusinessException as e: # Notify that email is already in use if business exception
+            messages.error(self.request, _(str(e)))
+        finally:
+            return redirect('index:main')
 
 
 class LoginView(View):

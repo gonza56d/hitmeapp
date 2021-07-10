@@ -2,11 +2,13 @@
 
 # Django
 from django.contrib import auth
+from django.db import IntegrityError
 from django.db import transaction
 from django.http.request import HttpRequest
 
 # Project
 from .models import User, Profile
+from hitmeapp.utils.exceptions import BusinessException
 
 
 def create_user(email: str, password: str, first_name: str, last_name: str,
@@ -37,13 +39,16 @@ def create_user(email: str, password: str, first_name: str, last_name: str,
     """
     user = None
     with transaction.atomic():
-        user = User.objects.create_user(email=email, password=password)
-        Profile.objects.create(
-            user=user,
-            first_name=first_name,
-            last_name=last_name,
-            phone_number=phone_number
-        )
+        try:
+            user = User.objects.create_user(email=email, password=password)
+            Profile.objects.create(
+                user=user,
+                first_name=first_name,
+                last_name=last_name,
+                phone_number=phone_number
+            )
+        except IntegrityError:
+            raise BusinessException('Email already in use.')
     return user
 
 
