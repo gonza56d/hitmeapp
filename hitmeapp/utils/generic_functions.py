@@ -22,3 +22,7 @@ def form_errors_into_string(form_erros: ErrorDict) -> str:
             errors = errors + ', '
         errors = errors + form_erros[error][0].lower()
     return errors
+
+
+def currency_to_float(currency: str) -> float:
+    return currency.replace('$', '').replace(',', '').replace('%', '')

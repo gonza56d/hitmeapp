@@ -4,9 +4,9 @@
 from django.urls import path
 
 # Project
-from .views import crypto_view
+from .views import CryptoListView
 
 
 urlpatterns = [
-    path('crypto/', crypto_view, name='crypto')
+    path('crypto/', CryptoListView.as_view(), name='crypto')
 ]

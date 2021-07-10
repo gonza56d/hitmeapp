@@ -1,0 +1,32 @@
+<table>
+    <tbody>
+        {% for object in object_list %}
+        <tr>
+            <td>
+                {{ object.number }}
+            </td>
+            <td>
+                {{ object.name }}
+            </td>
+            <td>
+                {{ object.price }}
+            </td>
+            <td>
+                {{ object.last_day }}
+            </td>
+            <td>
+                {{ object.last_week }}
+            </td>
+            <td>
+                {{ object.market_cap }}
+            </td>
+            <td>
+                {{ object.volume }}
+            </td>
+            <td>
+                {{ object.circulating_supply }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
