@@ -17,10 +17,16 @@ a {
     color: white;
 }
 
-.alert-app {
+.alert-app, .app-sidebar {
     color:#683200;
     background-color: #d38e4f;
     border-color: #a85100
+}
+
+@media (min-width: 768px) {
+    .app-sidebar {
+        border-right: solid 2px #683200;
+    }
 }
 
 .alert-app hr {
