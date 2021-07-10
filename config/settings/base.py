@@ -104,7 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # User override
 AUTH_USER_MODEL = 'users.User'
-AUTHENTICATION_BACKENDS = ['hitmeapp.users.backends.UserBackend']
+# AUTHENTICATION_BACKENDS = ['hitmeapp.users.backends.UserBackend']
 
 
 # Internationalization
