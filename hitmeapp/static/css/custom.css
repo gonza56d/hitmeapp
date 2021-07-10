@@ -23,3 +23,17 @@ a {
 .alert-app .alert-link{
     color: #da6900;
 }
+
+.alert-error {
+    color:#680000;
+    background-color: #d34f4f;
+    border-color: #a80000
+}
+
+.alert-error hr {
+    border-top-color: #a80000;
+}
+
+.alert-error .alert-link{
+    color: #da0000;
+}
