@@ -1,0 +1,22 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load i18n %}
+
+
+{% block content %}
+
+<div class="row px-1">
+
+    {% if user.is_authenticated %}
+
+    {% include 'index/index_authenticated.html' %}
+
+    {% else %}
+
+    {% include 'index/index_anonymous.html' %}
+    
+    {% endif %}
+
+</div>
+
+{% endblock %}
