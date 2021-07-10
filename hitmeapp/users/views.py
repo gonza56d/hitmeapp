@@ -4,7 +4,6 @@
 from django.contrib import messages
 from django.http.response import HttpResponse
 from django.views.generic.edit import FormView
-from django.urls import reverse
 from django.utils.translation import gettext as _
 
 # Project
