@@ -16,3 +16,4 @@ class Profile(BaseModel):
     birthday = models.DateField(null=True, blank=True)
     picture = models.ImageField(upload_to='profiles', blank=True)
     bio = models.CharField(max_length=3000, null=True, blank=True)
+    phone_number = models.PositiveIntegerField(blank=True, null=True)

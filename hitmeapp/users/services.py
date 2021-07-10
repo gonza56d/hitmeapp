@@ -1,7 +1,10 @@
 """Users business logic."""
 
+# Django
+from django.db import transaction
+
 # Project
-from .models import User
+from .models import User, Profile
 
 
 def create_user(email: str, password: str, first_name: str, last_name: str,
@@ -30,4 +33,13 @@ def create_user(email: str, password: str, first_name: str, last_name: str,
     ------
     User : instance of the new user created.
     """
-    pass
+    user = None
+    with transaction.atomic():
+        user = User.objects.create_user(email=email, password=password)
+        Profile.objects.create(
+            user=user,
+            first_name=first_name,
+            last_name=last_name,
+            phone_number=phone_number
+        )
+    return user
