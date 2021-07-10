@@ -5,26 +5,41 @@
 
 {% block content %}
 
-{% if user.is_authenticated %}
-<!-- todo -->
-{% else %}
-<div class="alert alert-app col-12 col-md-6 offset-md-3">
-    <form class="row text" method="POST" action="{% url 'users:signup' %}">{% csrf_token %}
-        <div class="col-12 my-2 text-center">
-            <h3>
-                {% translate 'Register your account' %}
-            </h3>
-        </div>
-        {% for field in form %}
-            <div class="col-12 my-2">
-                {{ field }}
+<div class="row px-1">
+
+    {% if user.is_authenticated %}
+    <!-- todo -->
+    {% else %}
+
+    <div class="alert alert-app col-12 col-md-3 d-md-inline offset-md-1" style="height:100%;">
+        <p>
+            {% translate 'Hitmeapp is an application to notify your when something on the market has reached the price you wanted.' %}
+        </p>
+        <p>
+            {% translate 'Sign up now to set what you want to track and how you would like to get notified.' %}
+        </p>
+    </div>
+
+    <div class="alert alert-app col-12 col-md-6 offset-md-2">
+        <form class="row text" method="POST" action="{% url 'users:signup' %}">{% csrf_token %}
+            <div class="col-12 my-2 text-center">
+                <h3>
+                    {% translate 'Register your account' %}
+                </h3>
             </div>
-        {% endfor %}
-        <div class="col-12 my-2">
-            <button class="btn btn-success btn-block">{% translate 'Signup' %}</button>
-        </div>
-    </form>
+            {% for field in form %}
+                <div class="col-12 my-2">
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <div class="col-12 my-2">
+                <button class="btn btn-success btn-block">{% translate 'Signup' %}</button>
+            </div>
+        </form>
+    </div>
+    
+    {% endif %}
+
 </div>
-{% endif %}
 
 {% endblock %}
