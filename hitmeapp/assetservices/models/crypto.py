@@ -3,16 +3,13 @@ class CryptoCurrency:
     """Model to build instances to display in crypto currency views.
     """
 
-    def __init__(self, number: int, name: str, price: float, last_day: float,
+    def __init__(self, name: str, price: float, last_day: float,
                  last_week: float, market_cap: float, volume: float,
-                 circulating_supply: str) -> None:
+                 circulating_supply: str, number: int=None) -> None:
         """Initialize a new instance to display in crypto currency views.
 
         Parameters
         ----------
-
-        number : int
-            Global ranking position.
 
         name : str
             Name of the crypto currency.
@@ -34,6 +31,9 @@ class CryptoCurrency:
         
         circulating_supply : str
             Currency market circulating supply.
+        
+        number : int
+            Global ranking position.
         """
         self.number = number
         self.name = name

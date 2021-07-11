@@ -21,6 +21,28 @@ class CryptoListView(ListView):
 
     template_name = 'crypto/list.html'
 
+    def build_asset_from_row(self, row) -> CryptoCurrency:
+        try:
+            return CryptoCurrency(
+                name=row.find_all('p', {'class': 'sc-1eb5slv-0'})[1].text,
+                price=currency_to_float(row.find_all('a', {'class': 'cmc-link'})[1].text),
+                last_day=currency_to_float(row.find_all('span', {'class': 'sc-15yy2pl-0'})[0].text),
+                last_week=currency_to_float(row.find_all('span', {'class': 'sc-15yy2pl-0'})[1].text),
+                market_cap=currency_to_float(row.find('span', {'class': 'sc-1ow4cwt-1'}).text),
+                volume=currency_to_float(row.find_all('p', {'class': 'sc-1eb5slv-0'})[4].text),
+                circulating_supply=row.find_all('p', {'class': 'sc-1eb5slv-0'})[6].text
+            )
+        except IndexError:
+            return CryptoCurrency(
+                name=row.find_all('span')[3].text,
+                price=currency_to_float(row.find_all('span')[5].text),
+                last_day='',
+                last_week='',
+                market_cap='',
+                volume='',
+                circulating_supply=''
+            )
+
     def set_soup(self):
         curl = requests.get('https://coinmarketcap.com/')
         self.soup = BeautifulSoup(curl.text, 'html.parser')
@@ -31,18 +53,9 @@ class CryptoListView(ListView):
         self.set_soup()
         objects_list = []
         for i, row in enumerate(self.table_rows):
-            print(row)
-            print(i)
-            objects_list.append(CryptoCurrency(
-                number=row.find_all('p')[0].text,
-                name=row.find_all('p', {'class': 'sc-1eb5slv-0'})[1].text,
-                price=currency_to_float(row.find_all('a', {'class': 'cmc-link'})[1].text),
-                last_day=currency_to_float(row.find_all('span', {'class': 'sc-15yy2pl-0'})[0].text),
-                last_week=currency_to_float(row.find_all('span', {'class': 'sc-15yy2pl-0'})[1].text),
-                market_cap=currency_to_float(row.find('span', {'class': 'sc-1ow4cwt-1'}).text),
-                volume=currency_to_float(row.find_all('p', {'font-size': '1'})[3].text),
-                circulating_supply=row.find_all('p', {'font-size': '1'})[4].text
-            ))
+            asset = self.build_asset_from_row(row)
+            asset.number = i+1
+            objects_list.append(asset)
         return objects_list
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
