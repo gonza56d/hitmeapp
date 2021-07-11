@@ -1,4 +1,4 @@
-"""Crypto currency asset service views."""
+"""Views for listing crypto currency asset services."""
 
 # Python
 import requests
@@ -7,7 +7,7 @@ from typing import Any
 # Django
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
-from django.views.generic import ListView
+from django.views.generic.list import ListView
 
 # BS4
 from bs4 import BeautifulSoup

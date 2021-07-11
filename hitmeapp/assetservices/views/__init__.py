@@ -1,1 +1,1 @@
-from .crypto import CryptoListView
+from .crypto import CryptoListView, CryptoDetailView

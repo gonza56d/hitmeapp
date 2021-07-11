@@ -49,7 +49,7 @@ def get_services_list() -> List[AssetService]:
     return [
         AssetService(
             name='Crypto Currency',
-            url=str(reverse('assetservices:crypto')),
+            url=str(reverse('assetservices:crypto-list')),
             status=AssetService.Status.AVAILABLE
         ),
         AssetService(

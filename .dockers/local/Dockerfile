@@ -13,7 +13,12 @@ RUN apk update \
 	# CFFI dependencies
 	&& apk add libffi-dev py-cffi \
 	&& apk add --no-cache openssl-dev libffi-dev \
-	&& apk add --no-cache --virtual .pynacl_deps build-base python3-dev libffi-dev
+	&& apk add --no-cache --virtual .pynacl_deps build-base python3-dev libffi-dev \
+	# lxml dependencies
+	&& apk add --no-cache --virtual .build-deps gcc libc-dev libxslt-dev \
+    && apk add --no-cache libxslt \
+    && pip install --no-cache-dir lxml>=3.5.0 \
+    && apk del .build-deps
 
 RUN mkdir /app
 COPY ./requirements /requirements
