@@ -5,6 +5,21 @@
 
 {% block content %}
 
-{{ object.name }}
+<a class="btn btn-success mb-3" href="{% url 'assetservices:crypto-list' %}">Back</a>
+
+<div class="row px-3">
+    <div class="alert alert-app col-12 col-md-4 text-center">
+        {{ object.name }}
+    </div>
+    <div class="col-md-8"></div>
+    <div class="alert alert-app col-12 col-md-4 text-center">
+        <p>{{ object.number }}</p>
+        <p>{% translate 'Current price' %}: {{ object.price }}USD</p>
+        <p>{% translate 'Last 24h changes' %}: {{ object.last_day }}</p>
+        <p>{% translate 'Total market cap' %}: {{ object.market_cap }}</p>
+        <p>{% translate 'Traded in last 24h' %}: {{ object.volume }}</p>
+        <p>{% translate 'Circulating supply' %}: {{ object.circulating_supply }}</p>
+    </div>
+</div>
 
 {% endblock %}
