@@ -12,7 +12,6 @@ from django.http.response import HttpResponse
 
 # BS4 and lxml
 from bs4 import BeautifulSoup
-from lxml import etree
 
 # Project
 from hitmeapp.assetservices.models import CryptoCurrency
