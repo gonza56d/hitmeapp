@@ -1,5 +1,8 @@
 """Utility generic functions."""
 
+# Python
+import re
+
 # Django
 from django.forms.utils import ErrorDict
 
@@ -25,4 +28,6 @@ def form_errors_into_string(form_erros: ErrorDict) -> str:
 
 
 def currency_to_float(currency: str) -> float:
-    return currency.replace('$', '').replace(',', '').replace('%', '')
+    print(currency)
+    currency = currency.replace('$', '').replace(',', '').replace('%', '')
+    return float(re.sub('[^0-9.]', '', currency))

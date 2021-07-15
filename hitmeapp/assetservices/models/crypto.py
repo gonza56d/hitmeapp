@@ -11,7 +11,7 @@ class CryptoCurrency(BaseModel):
 
     rank = models.PositiveIntegerField()
     name = models.CharField(max_length=50)
-    price = models.DecimalField(max_digits=9, decimal_places=2)
-    market_cap = models.DecimalField(max_digits=9, decimal_places=2)
-    volume = models.DecimalField(max_digits=9, decimal_places=2)
-    circulating_supply = models.DecimalField(max_digits=9, decimal_places=2)
+    price = models.DecimalField(max_digits=14, decimal_places=2)
+    market_cap = models.DecimalField(max_digits=14, decimal_places=2)
+    volume = models.DecimalField(max_digits=14, decimal_places=2)
+    circulating_supply = models.DecimalField(max_digits=14, decimal_places=2)

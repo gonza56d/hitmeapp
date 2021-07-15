@@ -1,6 +1,7 @@
 """External services requests for crypto currencies."""
 
 # Python
+import re
 import requests
 from typing import List
 
@@ -35,12 +36,12 @@ class DetailCryptoExternalRequest:
         symbol = cls.header.find('small', {'class': 'nameSymbol___1arQV'}).text
         cls.header.find('small', {'class': 'nameSymbol___1arQV'}).decompose()
         return CryptoCurrency(
-            rank=cls.header.find('div', {'class': 'namePill___3p_Ii namePillPrimary___2-GWA'}).text,
+            rank=int(re.sub('[^0-9]', '', cls.header.find('div', {'class': 'namePill___3p_Ii namePillPrimary___2-GWA'}).text)),
             name=cls.header.find('h2', {'class': 'sc-1q9q90x-0'}).text + ' (' + symbol + ')',
-            price=cls.header.find('div', {'class': 'priceValue___11gHJ'}).text,
-            market_cap=cls.header.find_all('div', {'class': 'statsValue___2iaoZ'})[0].text,
-            volume=cls.header.find_all('div', {'class': 'statsValue___2iaoZ'})[2].text,
-            circulating_supply=cls.header.find_all('div', {'class': 'statsValue___2iaoZ'})[4].text
+            price=currency_to_float(cls.header.find('div', {'class': 'priceValue___11gHJ'}).text),
+            market_cap=currency_to_float(cls.header.find_all('div', {'class': 'statsValue___2iaoZ'})[0].text),
+            volume=currency_to_float(cls.header.find_all('div', {'class': 'statsValue___2iaoZ'})[2].text),
+            circulating_supply=currency_to_float(cls.header.find_all('div', {'class': 'statsValue___2iaoZ'})[4].text)
         )
 
     @classmethod

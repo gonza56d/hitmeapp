@@ -11,6 +11,7 @@ from django.views.generic.list import ListView
 
 # Project
 from .external_requests import ListCryptoExternalRequest
+from hitmeapp.assetservices.models import CryptoCurrency
 
 
 class CryptoListView(LoginRequiredMixin, ListView):
@@ -19,6 +20,6 @@ class CryptoListView(LoginRequiredMixin, ListView):
     external_requests = ListCryptoExternalRequest
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-        self.object_list = self.external_requests.get_list()
+        self.object_list = CryptoCurrency.objects.filter(rank__lte=100)[:100]
         context = self.get_context_data()
         return self.render_to_response(context)

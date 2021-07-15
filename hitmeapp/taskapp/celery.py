@@ -26,3 +26,9 @@ class CeleryAppConfig(AppConfig):
     def ready(self):
         installed_apps = [app_config.name for app_config in apps.get_app_configs()]
         app.autodiscover_tasks(lambda: installed_apps, force=True)
+
+
+@app.on_after_finalize.connect
+def setup_periodic_tasks(sender, **kwargs):
+    from ..assetservices.tasks import collect_cryptos
+    sender.add_periodic_task(60.0, collect_cryptos.s())
