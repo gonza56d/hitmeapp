@@ -16,34 +16,16 @@ from bs4 import BeautifulSoup
 
 # Project
 from hitmeapp.assetservices.models import CryptoCurrency
+from .external_requests import DetailCryptoExternalRequest
 
 
 class CryptoDetailView(LoginRequiredMixin, DetailView):
 
     template_name = 'crypto/detail.html'
-
-    def build_asset(self) -> CryptoCurrency:
-        symbol = self.header.find('small', {'class': 'nameSymbol___1arQV'}).text
-        self.header.find('small', {'class': 'nameSymbol___1arQV'}).decompose()
-        return CryptoCurrency(
-            number=self.header.find('div', {'class': 'namePill___3p_Ii namePillPrimary___2-GWA'}).text,
-            name=self.header.find('h2', {'class': 'sc-1q9q90x-0'}).text + ' (' + symbol + ')',
-            price=self.header.find('div', {'class': 'priceValue___11gHJ'}).text,
-            last_day=None,
-            last_week='',
-            market_cap=self.header.find_all('div', {'class': 'statsValue___2iaoZ'})[0].text,
-            volume=self.header.find_all('div', {'class': 'statsValue___2iaoZ'})[2].text,
-            circulating_supply=self.header.find_all('div', {'class': 'statsValue___2iaoZ'})[4].text
-        )
-
-    def set_soup(self) -> None:
-        curl = requests.get('https://coinmarketcap.com/currencies/' + self.currency)
-        self.soup = BeautifulSoup(curl.text, 'html.parser')
-        self.header = self.soup.find_all('div', {'class': 'container'})[3]
+    external_requests = DetailCryptoExternalRequest
 
     def get_object(self, queryset=None) -> CryptoCurrency:
-        self.set_soup()
-        return self.build_asset()
+        return self.external_requests.build_asset(self.currency)
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         self.currency = kwargs['currency'].lower().replace(' ', '-')
