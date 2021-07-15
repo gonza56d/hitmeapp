@@ -6,6 +6,7 @@ from typing import Any
 import requests
 
 # Django
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.detail import DetailView
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
@@ -17,7 +18,7 @@ from bs4 import BeautifulSoup
 from hitmeapp.assetservices.models import CryptoCurrency
 
 
-class CryptoDetailView(DetailView):
+class CryptoDetailView(LoginRequiredMixin, DetailView):
 
     template_name = 'crypto/detail.html'
 

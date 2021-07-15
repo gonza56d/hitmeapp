@@ -107,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # User override
 AUTH_USER_MODEL = 'users.User'
 # AUTHENTICATION_BACKENDS = ['hitmeapp.users.backends.UserBackend']
-
+LOGIN_URL = '/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/

@@ -5,6 +5,7 @@ import requests
 from typing import Any
 
 # Django
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
 from django.views.generic.list import ListView
@@ -17,7 +18,7 @@ from hitmeapp.assetservices.models import CryptoCurrency
 from hitmeapp.utils.generic_functions import currency_to_float
 
 
-class CryptoListView(ListView):
+class CryptoListView(LoginRequiredMixin, ListView):
 
     template_name = 'crypto/list.html'
 
