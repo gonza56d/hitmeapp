@@ -35,11 +35,9 @@ class DetailCryptoExternalRequest:
         symbol = cls.header.find('small', {'class': 'nameSymbol___1arQV'}).text
         cls.header.find('small', {'class': 'nameSymbol___1arQV'}).decompose()
         return CryptoCurrency(
-            number=cls.header.find('div', {'class': 'namePill___3p_Ii namePillPrimary___2-GWA'}).text,
+            rank=cls.header.find('div', {'class': 'namePill___3p_Ii namePillPrimary___2-GWA'}).text,
             name=cls.header.find('h2', {'class': 'sc-1q9q90x-0'}).text + ' (' + symbol + ')',
             price=cls.header.find('div', {'class': 'priceValue___11gHJ'}).text,
-            last_day=None,
-            last_week='',
             market_cap=cls.header.find_all('div', {'class': 'statsValue___2iaoZ'})[0].text,
             volume=cls.header.find_all('div', {'class': 'statsValue___2iaoZ'})[2].text,
             circulating_supply=cls.header.find_all('div', {'class': 'statsValue___2iaoZ'})[4].text
@@ -79,13 +77,13 @@ class ListCryptoExternalRequest:
         asset = None
         try:
             asset = CryptoCurrency(
-                number=number,
+                rank=number,
                 name=row.find_all('p')[1].text,
                 price=currency_to_float(row.find_all('td')[3].text)
             )
         except IndexError:
             asset = CryptoCurrency(
-                number=number,
+                rank=number,
                 name=row.find_all('td')[2].find_all('span')[1].text,
                 price=currency_to_float(row.find_all('td')[3].text)
             )
