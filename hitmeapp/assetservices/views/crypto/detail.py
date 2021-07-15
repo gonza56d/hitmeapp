@@ -46,7 +46,7 @@ class CryptoDetailView(LoginRequiredMixin, DetailView):
         return self.build_asset()
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-        self.currency = kwargs['currency'].lower()
+        self.currency = kwargs['currency'].lower().replace(' ', '-')
         self.object = self.get_object()
         context = self.get_context_data()
         return self.render_to_response(context)
