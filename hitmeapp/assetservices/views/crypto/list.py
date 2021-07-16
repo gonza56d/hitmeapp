@@ -11,14 +11,12 @@ from django.http.response import HttpResponse
 from django.views.generic.list import ListView
 
 # Project
-from .external_requests import ListCryptoExternalRequest
 from hitmeapp.assetservices.models import CryptoCurrency
 
 
 class CryptoListView(LoginRequiredMixin, ListView):
 
     template_name = 'crypto/list.html'
-    external_requests = ListCryptoExternalRequest
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         currencies = CryptoCurrency.objects.annotate(occurrences=Count('name'))

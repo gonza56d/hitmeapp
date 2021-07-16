@@ -16,19 +16,17 @@ from bs4 import BeautifulSoup
 
 # Project
 from hitmeapp.assetservices.models import CryptoCurrency
-from .external_requests import DetailCryptoExternalRequest
 
 
 class CryptoDetailView(LoginRequiredMixin, DetailView):
 
     template_name = 'crypto/detail.html'
-    external_requests = DetailCryptoExternalRequest
 
     def get_object(self, queryset=None) -> CryptoCurrency:
-        return self.external_requests.build_asset(self.currency)
+        return CryptoCurrency.objects.filter(name=self.currency).latest()
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-        self.currency = kwargs['currency'].lower().replace(' ', '-')
+        self.currency = kwargs['currency']
         self.object = self.get_object()
         context = self.get_context_data()
         return self.render_to_response(context)

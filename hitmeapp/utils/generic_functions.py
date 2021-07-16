@@ -28,6 +28,5 @@ def form_errors_into_string(form_erros: ErrorDict) -> str:
 
 
 def currency_to_float(currency: str) -> float:
-    print(currency)
     currency = currency.replace('$', '').replace(',', '').replace('%', '')
     return float(re.sub('[^0-9.]', '', currency))
