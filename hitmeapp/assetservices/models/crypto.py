@@ -50,8 +50,12 @@ class CryptoCurrencyManager(models.Manager):
             with_filter = CryptoValue.objects.filter(
                 crypto_currency=crypto_currency
             )
+            crypto_currency.rank = None
             if with_filter:
-                crypto_currency.current_value = with_filter.latest()
+                latest = with_filter.latest()
+                crypto_currency.current_value = latest
+                crypto_currency.rank = latest.rank
+        _all.order_by('cryptovalue__rank')
         return _all
 
 

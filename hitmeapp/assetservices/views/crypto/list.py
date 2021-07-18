@@ -20,6 +20,5 @@ class CryptoListView(LoginRequiredMixin, ListView):
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         self.object_list = CryptoCurrency.objects.all_with_current_value()
-        #self.object_list.sort(key=lambda x: x.rank)
         context = self.get_context_data()
         return self.render_to_response(context)
