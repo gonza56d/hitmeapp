@@ -28,4 +28,4 @@ class CryptoCurrency(BaseModel):
     current_price = float(0)
 
     def __str__(self) -> str:
-        return f'CryptoCurrency[rank={self.rank}, name={self.name}, price={self.price}]'
+        return f'CryptoCurrency[symbol={self.symbol}, name={self.name}]'

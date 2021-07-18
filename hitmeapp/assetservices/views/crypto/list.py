@@ -24,6 +24,6 @@ class CryptoListView(LoginRequiredMixin, ListView):
         self.object_list = []
         for currency in currencies:
             self.object_list.append(CryptoCurrency.objects.filter(name=currency).latest())
-        self.object_list.sort(key=lambda x: x.rank)
+        #self.object_list.sort(key=lambda x: x.rank)
         context = self.get_context_data()
         return self.render_to_response(context)
