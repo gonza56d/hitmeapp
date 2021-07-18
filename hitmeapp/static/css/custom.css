@@ -1,9 +1,13 @@
 @media (min-width: 768px) {
     body, .app-sidebar {
         height: calc(100vh - 57px);
+        overflow: hidden;
     }
 }
 
+tbody {
+    overflow: scroll;
+}
 
 .bg-app {
     background-color: #ff7f07!important

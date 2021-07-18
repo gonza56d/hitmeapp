@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 from bs4.element import Tag
 
 # Project
-from hitmeapp.assetservices.models import CryptoCurrency
+from hitmeapp.assetservices.models import CryptoCurrency, CryptoValue
 from hitmeapp.utils.generic_functions import currency_to_float
 
 
@@ -19,8 +19,47 @@ class DetailCryptoExternalRequest:
     """
 
     @classmethod
-    def build_asset(cls, currency: str) -> CryptoCurrency:
-        """Create CryptoCurrency object from a currency detail in 
+    def get_circulating_supply(cls) -> float:
+        if cls.is_data_tracked:
+            return currency_to_float(cls.header.find_all('div', {'class': 'statsValue___2iaoZ'})[4].text)
+        else:
+            return None
+
+    @classmethod
+    def get_volume(cls) -> float:
+        if cls.is_data_tracked:
+            return currency_to_float(cls.header.find_all('div', {'class': 'statsValue___2iaoZ'})[2].text)
+        else:
+            return None
+
+    @classmethod
+    def get_market_cap(cls) -> float:
+        if cls.is_data_tracked:
+            return currency_to_float(cls.header.find_all('div', {'class': 'statsValue___2iaoZ'})[0].text)
+        else:
+            return None
+
+    @classmethod
+    def get_price(cls) -> float:
+        if cls.is_data_tracked:
+            return currency_to_float(cls.header.find('div', {'class': 'priceValue___11gHJ'}).text)
+        else:
+            return cls.currency.current_price
+
+    @classmethod
+    def check_is_data_tracked(cls) -> None:
+        """Check if the currency is currently being tracked by coinmarketcap
+        and set is_data_tracked.
+        """
+        try:
+            text = cls.header.find_all('h2', {'class': '1q9q90x-0'})[2].text
+            cls.is_data_tracked = 'untracked' in text
+        except IndexError or AttributeError:
+            cls.is_data_tracked = False
+
+    @classmethod
+    def build_asset(cls, currency: CryptoCurrency) -> CryptoValue:
+        """Create CryptoValue object from a currency detail in 
         https://coinmarketcap.com/currencies/$CURRENCY/.
 
         Parameters
@@ -33,41 +72,67 @@ class DetailCryptoExternalRequest:
         CryptoCurrency : instance to display the crypto info.
         """
         cls.set_soup(currency)
-        symbol = cls.header.find('small', {'class': 'nameSymbol___1arQV'}).text
-        cls.header.find('small', {'class': 'nameSymbol___1arQV'}).decompose()
-        return CryptoCurrency(
-            rank=int(re.sub('[^0-9]', '', cls.header.find('div', {'class': 'namePill___3p_Ii namePillPrimary___2-GWA'}).text)),
-            name=cls.header.find('h2', {'class': 'sc-1q9q90x-0'}).text + ' (' + symbol + ')',
-            price=currency_to_float(cls.header.find('div', {'class': 'priceValue___11gHJ'}).text),
-            market_cap=currency_to_float(cls.header.find_all('div', {'class': 'statsValue___2iaoZ'})[0].text),
-            volume=currency_to_float(cls.header.find_all('div', {'class': 'statsValue___2iaoZ'})[2].text),
-            circulating_supply=currency_to_float(cls.header.find_all('div', {'class': 'statsValue___2iaoZ'})[4].text)
+        cls.check_is_data_tracked()
+        asset = CryptoValue(
+            price=cls.get_price(),
+            market_cap=cls.get_market_cap(),
+            volume=cls.get_volume(),
+            circulating_supply=cls.get_circulating_supply()
         )
+        asset.crypto_currency = currency
+        return asset
 
     @classmethod
-    def set_soup(cls, currency: str) -> None:
+    def set_soup(cls, currency: CryptoCurrency) -> None:
         """Perform get request to https://coinmarketcap.com/currencies/$CURRENCY/
         and set the BeautifulSoup instance with the result.
         """
-        curl = requests.get('https://coinmarketcap.com/currencies/' + currency)
+        cls.currency = currency
+        curl = requests.get('https://coinmarketcap.com/currencies/' 
+            + currency.name.replace(' ', '-').replace('.', '-'))
         cls.soup = BeautifulSoup(curl.text, 'html.parser')
-        cls.header = cls.soup.find_all('div', {'class': 'container'})[3]
+        cls.header = cls.soup.select('div[class*="container"]')[3]
+        cls.symbol = cls.header.find('small', {'class': 'nameSymbol___1arQV'}).text
+
+    @classmethod
+    def clean(cls):
+        del cls.is_data_tracked, cls.soup, cls.currency, cls.header, cls.symbol
 
 
 class ListCryptoExternalRequest:
     """Handle external requests to list cryptos.
     """
-    
+
     @classmethod
-    def build_asset_from_row(cls, number: int, row: Tag) -> CryptoCurrency:
+    def get_current_price(cls) -> float:
+        return currency_to_float(cls.row.find_all('td')[3].text)
+
+    @classmethod
+    def get_name(cls) -> str:
+        if cls.dummy_row:
+            return cls.row.find_all('td')[2].find_all('span')[1].text
+        else:
+            return cls.row.find_all('td')[2].find_all('p')[0].text
+
+    @classmethod
+    def get_symbol(cls) -> str:
+        if cls.dummy_row:
+            return cls.row.find_all('td')[2].find_all('span')[2].text
+        else:
+            return cls.row.find_all('td')[2].find_all('p')[1].text
+
+    @classmethod
+    def check_row(cls) -> None:
+        row_class = cls.row.get('class') or ''
+        cls.dummy_row = 'sc-1rqmhtg-0' in row_class
+
+    @classmethod
+    def build_asset_from_row(cls, row: Tag) -> CryptoCurrency:
         """Create CryptoCurrency object from a https://coinmarketcap.com/
         table row.
 
         Parameters
         ----------
-        number : int
-            Position of the row plus one to assign to the instance number attr.
-        
         row : Tag
             bs4 Tag instance. Row from https://coinmarketcap.com/ table.
         
@@ -75,19 +140,15 @@ class ListCryptoExternalRequest:
         ------
         CryptoCurrency : instance to display the crypto info.
         """
-        asset = None
-        try:
-            asset = CryptoCurrency(
-                rank=number,
-                name=row.find_all('p')[1].text,
-                price=currency_to_float(row.find_all('td')[3].text)
-            )
-        except IndexError:
-            asset = CryptoCurrency(
-                rank=number,
-                name=row.find_all('td')[2].find_all('span')[1].text,
-                price=currency_to_float(row.find_all('td')[3].text)
-            )
+        cls.row = row
+        cls.check_row()
+        asset = CryptoCurrency(
+            symbol=cls.get_symbol(),
+            name=cls.get_name()
+        )
+        asset.current_price=cls.get_current_price()
+        row = None
+        cls.dummy_row = None
         return asset
 
     @classmethod
@@ -110,6 +171,6 @@ class ListCryptoExternalRequest:
         """
         cls.set_soup()
         _list = []
-        for index, row in enumerate(cls.table_rows):
-            _list.append(cls.build_asset_from_row(index+1, row))
+        for row in cls.table_rows:
+            _list.append(cls.build_asset_from_row(row))
         return _list

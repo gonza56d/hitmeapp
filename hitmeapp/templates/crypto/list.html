@@ -29,7 +29,7 @@
                     <a href="{{ object.name }}">{{ object.name }}</a>
                 </td>
                 <td>
-                    $ {{ object.price|intcomma }}
+                    $ {{ object.current_price|intcomma }}
                 </td>
             </tr>
             {% endfor %}
