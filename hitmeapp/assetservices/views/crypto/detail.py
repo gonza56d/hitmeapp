@@ -11,9 +11,6 @@ from django.views.generic.detail import DetailView
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
 
-# BS4 and lxml
-from bs4 import BeautifulSoup
-
 # Project
 from hitmeapp.assetservices.models import CryptoCurrency
 
@@ -23,7 +20,7 @@ class CryptoDetailView(LoginRequiredMixin, DetailView):
     template_name = 'crypto/detail.html'
 
     def get_object(self, queryset=None) -> CryptoCurrency:
-        return CryptoCurrency.objects.filter(name=self.currency).latest()
+        return CryptoCurrency.objects.get_with_current_value(symbol=self.currency)
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         self.currency = kwargs['currency']

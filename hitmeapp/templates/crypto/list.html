@@ -26,10 +26,10 @@
                     {{ object.rank }}
                 </td>
                 <td>
-                    <a href="{{ object.name }}">{{ object.name }}</a>
+                    <a href="{{ object.symbol }}">{{ object.name }}</a>
                 </td>
                 <td>
-                    $ {{ object.current_price|intcomma }}
+                    $ {{ object.current_value.price|intcomma }}
                 </td>
             </tr>
             {% endfor %}

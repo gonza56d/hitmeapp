@@ -19,11 +19,7 @@ class CryptoListView(LoginRequiredMixin, ListView):
     template_name = 'crypto/list.html'
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-        currencies = CryptoCurrency.objects.annotate(occurrences=Count('name'))
-        currencies = set([c.name for c in currencies])
-        self.object_list = []
-        for currency in currencies:
-            self.object_list.append(CryptoCurrency.objects.filter(name=currency).latest())
+        self.object_list = CryptoCurrency.objects.all_with_current_value()
         #self.object_list.sort(key=lambda x: x.rank)
         context = self.get_context_data()
         return self.render_to_response(context)

@@ -1,25 +1,19 @@
+# Django
+from django.db.utils import DataError
+
 # Project
 from hitmeapp.taskapp.celery import app as celery_app
 from .models import CryptoCurrency
-from .views.crypto.external_requests import (
-    DetailCryptoExternalRequest,
-    ListCryptoExternalRequest
-)
+from .api.crypto.external_requests import ListCryptoExternalRequest
 
 
 @celery_app.task
 def collect_cryptos():
-    _list = ListCryptoExternalRequest.get_list()
-    for index, result in enumerate(_list):
-        #try:
+    _list = ListCryptoExternalRequest().get_list()
+    for result in _list:
         crypto, created = CryptoCurrency.objects.get_or_create(
-            symbol=result.symbol, name=result.name
+            symbol=result.crypto_currency.symbol,
+            name=result.crypto_currency.name
         )
-        print(result.name.replace(' ', '-'))
-        crypto_value = DetailCryptoExternalRequest.build_asset(result)
-        print('crypto_value:', crypto_value)
-        crypto_value.rank = index + 1
-        crypto_value = crypto
-        crypto_value.save()
-        #except IndexError as e:
-        #    print('IndexError when collecting cryptos (task) at: ' + str(e))
+        result.crypto_currency = crypto
+        result.save()
