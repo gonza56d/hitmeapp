@@ -12,6 +12,8 @@ environ.Env.read_env()
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 
+# Secret API key for coinmarketcap public API
+COINMARKETCAP_API_KEY = env('COINMARKETCAP_API_KEY')
 
 # Application definition
 

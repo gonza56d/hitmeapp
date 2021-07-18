@@ -91,7 +91,7 @@ class DetailCryptoExternalRequest:
         curl = requests.get('https://coinmarketcap.com/currencies/' 
             + currency.name.replace(' ', '-').replace('.', '-'))
         cls.soup = BeautifulSoup(curl.text, 'html.parser')
-        cls.header = cls.soup.select('div[class*="container"]')[3]
+        cls.header = cls.soup.select('div.container')[3]
         cls.symbol = cls.header.find('small', {'class': 'nameSymbol___1arQV'}).text
 
     @classmethod
