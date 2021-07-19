@@ -9,15 +9,15 @@
 
 <div class="row px-3">
     <div class="alert alert-app col-12 col-md-4 text-center">
-        {{ object.name }} ({{ object.symbol }})
+        <strong>{{ object.name }} ({{ object.symbol }})</strong>
     </div>
     <div class="col-md-8"></div>
     <div class="alert alert-app col-12 col-md-4 text-center">
-        <p>Rank: #{{ object.current_value.rank }}</p>
-        <p>{% translate 'Current price' %}: {{ object.current_value.price }}USD</p>
-        <p>{% translate 'Total market cap' %}: {{ object.current_value.market_cap }}</p>
-        <p>{% translate 'Traded in last 24h' %}: {{ object.current_value.volume }}</p>
-        <p>{% translate 'Circulating supply' %}: {{ object.current_value.circulating_supply }}</p>
+        <p><strong>Rank:</strong> #{{ object.current_value.rank }}</p>
+        <p><strong>{% translate 'Current price' %}:</strong> $ {{ object.current_value.price|floatformat:2|intcomma }} USD</p>
+        <p><strong>{% translate 'Total market cap' %}:</strong> $ {{ object.current_value.market_cap|floatformat:2|intcomma }}</p>
+        <p><strong>{% translate 'Traded in last 24h' %}:</strong> $ {{ object.current_value.volume|floatformat:2|intcomma }}</p>
+        <p><strong>{% translate 'Circulating supply' %}:</strong> $ {{ object.current_value.circulating_supply|floatformat:2|intcomma }}</p>
     </div>
 </div>
 
