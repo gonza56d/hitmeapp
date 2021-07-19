@@ -14,10 +14,46 @@
     <div class="col-md-8"></div>
     <div class="alert alert-app col-12 col-md-4 text-center">
         <p><strong>Rank:</strong> #{{ object.current_value.rank }}</p>
-        <p><strong>{% translate 'Current price' %}:</strong> $ {{ object.current_value.price|floatformat:2|intcomma }}</p>
-        <p><strong>{% translate 'Total market cap' %}:</strong> $ {{ object.current_value.market_cap|floatformat:2|intcomma }}</p>
-        <p><strong>{% translate 'Traded in last 24h' %}:</strong> $ {{ object.current_value.volume|floatformat:2|intcomma }}</p>
-        <p><strong>{% translate 'Circulating supply' %}:</strong> $ {{ object.current_value.circulating_supply|floatformat:2|intcomma }}</p>
+        <p>
+            <strong>{% translate 'Current price' %}:</strong> 
+            $ {{ object.current_value.price|floatformat:2|intcomma }}
+        </p>
+        <p>
+            <strong>{% translate 'Total market cap' %}:</strong> 
+            $ {{ object.current_value.market_cap|floatformat:2|intcomma }}
+        </p>
+        <p>
+            <strong>{% translate 'Traded in last 24h' %}:</strong> 
+            $ {{ object.current_value.volume|floatformat:2|intcomma }}
+        </p>
+        <p>
+            <strong>{% translate 'Circulating supply' %}:</strong> 
+            $ {{ object.current_value.circulating_supply|floatformat:2|intcomma }}
+        </p>
+        <p>
+            <strong>{% translate 'Changed in last hour' %}:</strong> 
+            <span style="color:{% if object.current_value.percent_change_1h > 0 %}green{% elif object.current_value.percent_change_1h < 0 %}red{% else %}grey{% endif %}">% {{ object.current_value.percent_change_1h|floatformat:2|intcomma }}</span>
+        </p>
+        <p>
+            <strong>{% translate 'Changed in last day' %}:</strong> 
+            <span style="color:{% if object.current_value.percent_change_24h > 0 %}green{% elif object.current_value.percent_change_24h < 0 %}red{% else %}grey{% endif %}">% {{ object.current_value.percent_change_24h|floatformat:2|intcomma }}</span>
+        </p>
+        <p>
+            <strong>{% translate 'Changed in last week' %}:</strong> 
+            <span style="color:{% if object.current_value.percent_change_7d > 0 %}green{% elif object.current_value.percent_change_7d < 0 %}red{% else %}grey{% endif %}">% {{ object.current_value.percent_change_7d|floatformat:2|intcomma }}</span>
+        </p>
+        <p>
+            <strong>{% translate 'Changed in last month' %}:</strong> 
+            <span style="color:{% if object.current_value.percent_change_30d > 0 %}green{% elif object.current_value.percent_change_30d < 0 %}red{% else %}grey{% endif %}">% {{ object.current_value.percent_change_30d|floatformat:2|intcomma }}</span>
+        </p>
+        <p>
+            <strong>{% translate 'Changed in last two months' %}:</strong> 
+            <span style="color:{% if object.current_value.percent_change_60d > 0 %}green{% elif object.current_value.percent_change_60d < 0 %}red{% else %}grey{% endif %}">% {{ object.current_value.percent_change_60d|floatformat:2|intcomma }}</span>
+        </p>
+        <p>
+            <strong>{% translate 'Changed in last three months' %}:</strong> 
+            <span style="color:{% if object.current_value.percent_change_90d > 0 %}green{% elif object.current_value.percent_change_90d < 0 %}red{% else %}grey{% endif %}">% {{ object.current_value.percent_change_90d|floatformat:2|intcomma }}</span>
+        </p>
         <p>All the values are expressed in USD.</p>
     </div>
 </div>
