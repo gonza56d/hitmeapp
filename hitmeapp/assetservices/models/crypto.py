@@ -28,9 +28,16 @@ class CryptoTracking(BaseModel):
         'assetservices.CryptoCurrency', on_delete=models.CASCADE, null=False
     )
     value_when_tracked = CurrencyField()
-    desired_value_type = models.CharField(max_length=1, choices=DesiredValueType.choices)
+    desired_value_type = models.CharField(
+        max_length=1, choices=DesiredValueType.choices, blank=False
+    )
     desired_value = CurrencyField()
-    notification_platform = models.CharField(max_length=1, choices=NotificationPlatform.choices)
+    notification_platform = models.CharField(
+        max_length=1, choices=NotificationPlatform.choices, blank=False
+    )
+
+    def __str__(self) -> str:
+        return f'CryptoTracking[user={self.user}, crypto_currency={self.crypto_currency}, value_when_tracked={self.value_when_tracked}, desired_value_type={self.desired_value_type}, desired_value={self.desired_value}, notification_platform={self.notification_platform}]'
 
 
 class CryptoValue(BaseModel):
@@ -93,6 +100,10 @@ class CryptoValue(BaseModel):
 
 
 class CryptoCurrencyManager(models.Manager):
+
+    def set_current_value(self, crypto_currency) -> None:
+        crypto_value = CryptoValue.objects.filter(crypto_currency=crypto_currency).latest()
+        crypto_currency.current_value = crypto_value
 
     def get_with_current_value(self, symbol: str):
         _get = self.get(symbol=symbol)

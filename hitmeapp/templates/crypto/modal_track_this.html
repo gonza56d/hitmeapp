@@ -1,18 +1,27 @@
+{% load i18n %}
+
 <div class="modal fade" id="modal_track_this" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <form method="POST" action="{% url 'assetservices:crypto-tracking-create' %}" class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">{% translate 'Track This Crypto' %}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                ...
+                <div class="row">{% csrf_token %}
+                    {% for field in crypto_tracking_form %}
+                    <div class="col-12 py-1">
+                        {{ field.label }}
+                        {{ field }}
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success">Save changes</button>
+                <button type="submit" class="btn btn-success">{% translate 'Confirm and Track' %}</button>
             </div>
-        </div>
+        </form>
     </div>
 </div>

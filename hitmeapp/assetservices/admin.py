@@ -4,7 +4,18 @@
 from django.contrib import admin
 
 # Project
-from .models import CryptoCurrency, CryptoValue
+from .models import CryptoCurrency, CryptoValue, CryptoTracking
+
+
+@admin.register(CryptoTracking)
+class CryptoTrackingAdmin(admin.ModelAdmin):
+
+    list_display = ('user', 'crypto_currency', 'value_when_tracked', 
+        'desired_value_type', 'desired_value', 'notification_platform')
+    search_fields = ('user', 'crypto_currency', 'value_when_tracked', 
+        'desired_value_type', 'desired_value', 'notification_platform')
+    list_filter = ('user', 'crypto_currency', 'value_when_tracked', 
+        'desired_value_type', 'desired_value', 'notification_platform')
 
 
 @admin.register(CryptoCurrency)

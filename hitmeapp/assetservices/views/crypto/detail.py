@@ -12,6 +12,7 @@ from django.http.request import HttpRequest
 from django.http.response import HttpResponse
 
 # Project
+from hitmeapp.assetservices.forms import CryptoTrackingForm
 from hitmeapp.assetservices.models import CryptoCurrency
 
 
@@ -26,4 +27,5 @@ class CryptoDetailView(LoginRequiredMixin, DetailView):
         self.currency = kwargs['currency']
         self.object = self.get_object()
         context = self.get_context_data()
+        context['crypto_tracking_form'] = CryptoTrackingForm(self.object)
         return self.render_to_response(context)
