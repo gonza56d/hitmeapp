@@ -7,6 +7,7 @@ from django.db import models
 
 # Project
 from hitmeapp.utils.models import BaseModel
+from hitmeapp.utils.models.custom_fields import CurrencyField
 
 
 class CryptoValue(BaseModel):
@@ -17,10 +18,17 @@ class CryptoValue(BaseModel):
         'assetservices.CryptoCurrency', on_delete=models.CASCADE, null=False
     )
     rank = models.PositiveIntegerField()
-    price = models.DecimalField(max_digits=30, decimal_places=8)
-    market_cap = models.DecimalField(max_digits=30, decimal_places=8)
-    volume = models.DecimalField(max_digits=30, decimal_places=8)
-    circulating_supply = models.DecimalField(max_digits=30, decimal_places=8)
+    price = CurrencyField()
+    market_cap = CurrencyField()
+    volume = CurrencyField()
+    circulating_supply = CurrencyField()
+    percent_change_1h = CurrencyField()
+    percent_change_24h = CurrencyField()
+    percent_change_7d = CurrencyField()
+    percent_change_30d = CurrencyField()
+    percent_change_60d = CurrencyField()
+    percent_change_90d = CurrencyField()
+
     FACTOR = 10.0 ** 2
 
     def truncate(self, value: float) -> float:
@@ -46,10 +54,16 @@ class CryptoValue(BaseModel):
 
     def set_attributes(self, result: Dict) -> None:
         self.rank = result.get('cmc_rank')
+        self.circulating_supply = self.truncate(float(result.get('circulating_supply')))
+        self.volume = self.truncate(float(result.get('quote').get('USD').get('volume_24h')))
         self.price = self.truncate(float(result.get('quote').get('USD').get('price')))
         self.market_cap = self.truncate(float(result.get('quote').get('USD').get('market_cap')))
-        self.volume = self.truncate(float(result.get('quote').get('USD').get('volume_24h')))
-        self.circulating_supply = self.truncate(float(result.get('circulating_supply')))
+        self.percent_change_1h = self.truncate(float(result.get('quote').get('USD').get('percent_change_1h')))
+        self.percent_change_24h = self.truncate(float(result.get('quote').get('USD').get('percent_change_24h')))
+        self.percent_change_7d = self.truncate(float(result.get('quote').get('USD').get('percent_change_7d')))
+        self.percent_change_30d = self.truncate(float(result.get('quote').get('USD').get('percent_change_30d')))
+        self.percent_change_60d = self.truncate(float(result.get('quote').get('USD').get('percent_change_60d')))
+        self.percent_change_90d = self.truncate(float(result.get('quote').get('USD').get('percent_change_90d')))
 
     def __str__(self) -> str:
         return f'CryptoCurrency[crypto_currency={self.crypto_currency}, rank={self.rank}, price={self.price}, market_cap={self.market_cap}, volume={self.volume}, circulating_supply={self.circulating_supply}]'
