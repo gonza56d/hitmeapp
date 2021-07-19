@@ -47,15 +47,13 @@ class CryptoCurrencyManager(models.Manager):
     def all_with_current_value(self):
         _all = self.all()
         for crypto_currency in _all:
-            with_filter = CryptoValue.objects.filter(
+            latest = CryptoValue.objects.filter(
                 crypto_currency=crypto_currency
-            )
+            ).latest()
             crypto_currency.rank = None
-            if with_filter:
-                latest = with_filter.latest()
+            if latest:
                 crypto_currency.current_value = latest
                 crypto_currency.rank = latest.rank
-        _all.order_by('cryptovalue__rank')
         return _all
 
 
