@@ -21,14 +21,35 @@ class CryptoValue(BaseModel):
     market_cap = models.DecimalField(max_digits=30, decimal_places=8)
     volume = models.DecimalField(max_digits=30, decimal_places=8)
     circulating_supply = models.DecimalField(max_digits=30, decimal_places=8)
+    FACTOR = 10.0 ** 2
+
+    def truncate(self, value: float) -> float:
+        if value is None:
+            return 0.0
+        return trunc(float(value) * self.FACTOR) / self.FACTOR
+
+    @property
+    def truncated_price(self) -> float:
+        return self.truncate(self.price)
+
+    @property
+    def truncated_market_cap(self) -> float:
+        return self.truncate(self.market_cap)
+
+    @property
+    def truncated_volume(self) -> float:
+        return self.truncate(self.volume)
+
+    @property
+    def truncated_circulating_supply(self) -> float:
+        return self.truncate(self.circulating_supply)
 
     def set_attributes(self, result: Dict) -> None:
-        factor = 10.0 ** 2
         self.rank = result.get('cmc_rank')
-        self.price = trunc(float(result.get('quote').get('USD').get('price')) * factor) / factor
-        self.market_cap = trunc(float(result.get('quote').get('USD').get('market_cap')) * factor) / factor
-        self.volume = trunc(float(result.get('quote').get('USD').get('volume_24h')) * factor) / factor
-        self.circulating_supply = trunc(float(result.get('circulating_supply')) * factor) / factor
+        self.price = self.truncate(float(result.get('quote').get('USD').get('price')))
+        self.market_cap = self.truncate(float(result.get('quote').get('USD').get('market_cap')))
+        self.volume = self.truncate(float(result.get('quote').get('USD').get('volume_24h')))
+        self.circulating_supply = self.truncate(float(result.get('circulating_supply')))
 
     def __str__(self) -> str:
         return f'CryptoCurrency[crypto_currency={self.crypto_currency}, rank={self.rank}, price={self.price}, market_cap={self.market_cap}, volume={self.volume}, circulating_supply={self.circulating_supply}]'

@@ -29,7 +29,7 @@
                     <a href="{{ object.symbol }}">{{ object.name }}</a>
                 </td>
                 <td>
-                    $ {{ object.current_value.price|intcomma }}
+                    $ {{ object.current_value.truncated_price|floatformat:2|intcomma }}
                 </td>
             </tr>
             {% endfor %}
