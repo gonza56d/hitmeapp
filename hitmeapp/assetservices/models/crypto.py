@@ -10,6 +10,29 @@ from hitmeapp.utils.models import BaseModel
 from hitmeapp.utils.models.custom_fields import CurrencyField
 
 
+class CryptoTracking(BaseModel):
+    """Describe which users are tracking which Cryptos.
+    """
+
+    class DesiredValueType(models.TextChoices):
+        PERCENTAGE = 'P', 'Percentage'
+        VALUE = 'V', 'Value'
+
+    class NotificationPlatform(models.TextChoices):
+        EMAIL = 'E', 'Email'
+        TELE = 'T', 'Telegram'
+        WPP = 'W', 'WhatsApp'
+
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE, null=False)
+    crypto_currency = models.ForeignKey(
+        'assetservices.CryptoCurrency', on_delete=models.CASCADE, null=False
+    )
+    value_when_tracked = CurrencyField()
+    desired_value_type = models.CharField(max_length=1, choices=DesiredValueType.choices)
+    desired_value = CurrencyField()
+    notification_platform = models.CharField(max_length=1, choices=NotificationPlatform.choices)
+
+
 class CryptoValue(BaseModel):
     """Value at some datetime of a specific CryptoCurrency.
     """

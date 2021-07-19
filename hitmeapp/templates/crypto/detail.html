@@ -5,7 +5,9 @@
 
 {% block content %}
 
-<a class="btn btn-success mb-3" href="{% url 'assetservices:crypto-list' %}">Back</a>
+<a class="btn btn-success mb-3" href="{% url 'assetservices:crypto-list' %}">{% translate 'Back' %}</a>
+
+<button class="btn btn-success mb-3" id="btn_track_this" data-toggle="modal" data-target="#modal_track_this">{% translate 'Track this' %}</button>
 
 <div class="row px-3">
     <div class="alert alert-app col-12 col-md-4 text-center">
@@ -57,5 +59,7 @@
 
     </div>
 </div>
+
+{% include 'crypto/modal_track_this.html' %}
 
 {% endblock %}
