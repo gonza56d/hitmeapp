@@ -14,10 +14,11 @@
     <div class="col-md-8"></div>
     <div class="alert alert-app col-12 col-md-4 text-center">
         <p><strong>Rank:</strong> #{{ object.current_value.rank }}</p>
-        <p><strong>{% translate 'Current price' %}:</strong> $ {{ object.current_value.price|floatformat:2|intcomma }} USD</p>
+        <p><strong>{% translate 'Current price' %}:</strong> $ {{ object.current_value.price|floatformat:2|intcomma }}</p>
         <p><strong>{% translate 'Total market cap' %}:</strong> $ {{ object.current_value.market_cap|floatformat:2|intcomma }}</p>
         <p><strong>{% translate 'Traded in last 24h' %}:</strong> $ {{ object.current_value.volume|floatformat:2|intcomma }}</p>
         <p><strong>{% translate 'Circulating supply' %}:</strong> $ {{ object.current_value.circulating_supply|floatformat:2|intcomma }}</p>
+        <p>All the values are expresed in USD.</p>
     </div>
 </div>
 
