@@ -1,33 +1,35 @@
 # Django
-from hitmeapp.assetservices.models.crypto import CryptoCurrency
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.utils.translation import gettext as _
 from django.views.generic import View
 
 # Project
-from hitmeapp.assetservices.models import CryptoTracking
 from hitmeapp.assetservices.forms.crypto import CryptoTrackingForm
+from hitmeapp.assetservices import services
 from hitmeapp.utils.generic_functions import form_errors_into_string
 
 
-class CryptoTrackingCreateView(View):
+class CryptoTrackingCreateView(LoginRequiredMixin, View):
 
     def post(self, request):
+        """Handle user POST request when tries to create a new CryptoTracking.
+        """
         form = CryptoTrackingForm(data=request.POST)
         if form.is_valid():
-            crypto = form.cleaned_data.get('crypto_currency')
-            CryptoCurrency.objects.set_current_value(crypto)
-            crypto_tracking = CryptoTracking(
+            crypto = services.create_crypto_tracking(
                 user=request.user,
-                crypto_currency=crypto,
-                desired_value_type=form.cleaned_data.get('desired_value_type'),
+                crypto_currency=form.cleaned_data.get('crypto_currency'),
                 desired_value=form.cleaned_data.get('desired_value'),
-                notification_platform=form.cleaned_data.get('notification_platform'),
-                value_when_tracked=crypto.current_value.price
+                desired_value_type=form.cleaned_data.get('desired_value_type'),
+                notification_platform=form.cleaned_data.get('notification_platform')
             )
-            crypto_tracking.save()
-            messages.success(request, _(f'{crypto.name} ({crypto.symbol}) tracked'))
+            if crypto:
+                messages.success(request, _(f'{crypto.name} ({crypto.symbol}) tracked'))
+            else:
+                messages.error(request, _('Something went wrong'))
         else:
-            messages.warning(request, form.errors)
+            errors = form_errors_into_string(form.errors)
+            messages.warning(request, errors)
         return redirect('assetservices:crypto-list')

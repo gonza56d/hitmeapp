@@ -15,11 +15,28 @@ from hitmeapp.utils.exceptions import BusinessException
 from hitmeapp.utils.generic_functions import form_errors_into_string
 
 
+class MyProfile(View):
+
+    def get(self, request: HttpRequest) -> HttpResponse:
+        """Handle users' request to see their own profile data.
+
+        Parameters
+        ----------
+        request : HttpRequest
+            Django request object.
+        
+        Return
+        ------
+        HttpResponse : Display the proper template with all the user in session data.
+        """
+        pass
+
+
 class SignupView(View):
     """Handle the signup form requests in order to sign up new users on POST.
     """
 
-    def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+    def post(self, request: HttpRequest) -> HttpResponse:
         """Handle users' signup request.
 
         Parameters

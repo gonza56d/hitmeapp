@@ -108,7 +108,6 @@ class CryptoCurrencyManager(models.Manager):
     def get_with_current_value(self, symbol: str):
         _get = self.get(symbol=symbol)
         crypto_value = CryptoValue.objects.filter(crypto_currency=_get)
-        print(crypto_value)
         if crypto_value:
             _get.current_value = crypto_value.latest()
         return _get
