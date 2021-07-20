@@ -5,17 +5,17 @@
 <header class="navbar navbar-expand navbar-dark bg-app flex-column bd-navbar">
 
     <div class="row col-12 px-0">
-        <a class="col-6 {% if user.is_authenticated %}col-md-8 col-lg-9{% else %}col-md-6{% endif %}" href="/" aria-label="Hitmeapp">
+        <a class="col-4 {% if user.is_authenticated %}col-md-8 col-lg-9{% else %}col-md-6{% endif %}" href="/" aria-label="Hitmeapp">
             <h3 class="mx-auto">Hitmeapp</h3>
         </a>
         {% if user.is_authenticated %}
-        <div class="col-3 col-md-2 my-auto text-right">
+        <div class="col-5 col-md-2 my-auto text-right">
             <a href="{% url 'users:my-profile' %}"><i class="fas fa-user mr-1" style="color:white;"></i>{{ request.user }}</a>
         </div>
         <form class="col-3 col-md-2 col-lg-1" method="GET" action="{% url 'users:login' %}">
             <ul class="navbar-nav bd-navbar-nav flex-row">
                 <li class="nav-item px-1 ml-auto">
-                    <button class="btn btn-success">{% translate 'Logout' %}</button>
+                    <button class="btn btn-success btn-block"><i class="fas fa-door-open"></i></button>
                 </li>
             </ul>
         </form>
