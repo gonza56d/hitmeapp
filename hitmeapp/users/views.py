@@ -4,13 +4,14 @@
 from django.contrib import messages
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.views.generic import View
 from django.utils.translation import gettext_lazy as _
 
 # Project
 from .forms import SignupForm, LoginForm
 from . import services
+from hitmeapp.assetservices.models import CryptoTracking
 from hitmeapp.utils.exceptions import BusinessException
 from hitmeapp.utils.generic_functions import form_errors_into_string
 
@@ -29,7 +30,8 @@ class MyProfile(View):
         ------
         HttpResponse : Display the proper template with all the user in session data.
         """
-        pass
+        crypto_trackings = CryptoTracking.objects.filter(user=request.user)
+        return render(request, 'users/my_profile.html', {'crypto_trackings': crypto_trackings})
 
 
 class SignupView(View):
