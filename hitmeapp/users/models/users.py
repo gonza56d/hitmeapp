@@ -3,7 +3,7 @@ from django.contrib.auth.models import (
     AbstractUser,
     UserManager as DjangoUserManager
 )
-from django.db import models, transaction
+from django.db import models
 
 # Project
 from .profiles import Profile

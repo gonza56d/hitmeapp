@@ -31,9 +31,9 @@
                 {% for crypto_tracking in crypto_trackings %}
                 <tr>
                     <td class="text-center">
-                        <button class="btn btn-danger" data-toggle="tooltip" title="{% translate 'Delete' %}">
+                        <a href="{% url 'assetservices:crypto-tracking-delete' crypto_tracking.id %}" class="btn btn-danger" data-toggle="tooltip" title="{% translate 'Delete' %}">
                             <i class="fas fa-trash"></i>
-                        </button>
+                        </a>
                     </td>
                     <td>{{ crypto_tracking.crypto_currency.name }} ({{ crypto_tracking.crypto_currency.symbol }})</td>
                     <td class="text-right">$ {{ crypto_tracking.value_when_tracked|floatformat:2|intcomma }}</td>
@@ -41,6 +41,9 @@
                     <td>{{ crypto_tracking.notification_platform }}</td>
                 </tr>
                 {% endfor %}
+                {% if not crypto_trackings %}
+                <tr><td class="text-center" colspan="5">Check the <a href="{% url 'assetservices:crypto-list' %}">crypto currencies list</a> to start tracking</td></tr>
+                {% endif %}
             </tbody>
         </table>
     </div>

@@ -1,6 +1,7 @@
 """Users views."""
 
 # Django
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
@@ -16,7 +17,7 @@ from hitmeapp.utils.exceptions import BusinessException
 from hitmeapp.utils.generic_functions import form_errors_into_string
 
 
-class MyProfile(View):
+class MyProfile(LoginRequiredMixin, View):
 
     def get(self, request: HttpRequest) -> HttpResponse:
         """Handle users' request to see their own profile data.
