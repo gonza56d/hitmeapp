@@ -15,8 +15,11 @@ SECRET_KEY = env('DJANGO_SECRET_KEY')
 # Secret API key for coinmarketcap public API
 COINMARKETCAP_API_KEY = env('COINMARKETCAP_API_KEY')
 
-# Application definition
+# Secret Telegram Bot API key
+TELEGRAM_BOT_API_KEY = env('TELEGRAM_BOT_API_KEY')
 
+
+# Application definition
 DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
